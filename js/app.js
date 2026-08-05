@@ -4,30 +4,65 @@
 // ===== STATE =====
 const state = {
   currentPage: 'home',
-  prevPage: 'home',
   cart: [],
   cartOpen: false,
   mobileMenuOpen: false
 };
 
 // ===== PAGE NAVIGATION =====
-function showPage(page) {
-  const current = document.getElementById(state.currentPage + '-page');
+function showPage(page, pushState) {
+  if (page === state.currentPage) {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    return;
+  }
+
+  // Hide all pages
+  const allPages = document.querySelectorAll('.page');
+  allPages.forEach(p => p.classList.remove('active'));
+
+  // Show target page
   const target = document.getElementById(page + '-page');
-  if (!target || page === state.currentPage) return;
+  if (!target) return;
 
-  if (current) current.classList.remove('active');
-
-  state.prevPage = state.currentPage;
   state.currentPage = page;
-
   target.classList.add('active');
+
+  // Update URL hash (enables browser back/forward)
+  if (pushState !== false) {
+    const hash = page === 'home' ? '#' : '#' + page;
+    history.pushState({ page }, '', hash);
+  }
+
   closeMobileMenu();
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function goBack() {
-  showPage(state.prevPage || 'home');
+  history.back();
+}
+
+// ===== BROWSER BACK/FORWARD SUPPORT =====
+window.addEventListener('popstate', function(e) {
+  const page = (e.state && e.state.page) ? e.state.page : getPageFromHash();
+  showPageFromHistory(page);
+});
+
+function getPageFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const validPages = ['home', 'menu', 'gallery', 'reservation', 'faq', 'vacancies'];
+  return validPages.includes(hash) ? hash : 'home';
+}
+
+function showPageFromHistory(page) {
+  const allPages = document.querySelectorAll('.page');
+  allPages.forEach(p => p.classList.remove('active'));
+
+  const target = document.getElementById(page + '-page');
+  if (!target) return;
+
+  state.currentPage = page;
+  target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 // ===== MOBILE MENU =====
@@ -100,8 +135,6 @@ function renderListCard(item) {
 function buildMenuGrids() {
   const gridCategories = ['hotdog', 'qelyanalt', 'burger', 'sorba'];
   const listCategories = ['soyuq', 'isti', 'extra'];
-
-  const fragment = document.createDocumentFragment();
 
   gridCategories.forEach(cat => {
     const el = document.getElementById('grid-' + cat);
@@ -452,4 +485,12 @@ document.addEventListener('DOMContentLoaded', function() {
   buildMenuGrids();
   buildVacanciesGrid();
   updateCartUI();
+
+  // Handle initial page from URL hash
+  const initialPage = getPageFromHash();
+  // Set the initial history state
+  history.replaceState({ page: initialPage }, '', initialPage === 'home' ? '#' : '#' + initialPage);
+  // Show correct page on load
+  showPageFromHistory(initialPage);
+
 }, { once: true });

@@ -1,6 +1,12 @@
 /* ===== COOL FOOD - Main Styles ===== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
+/* Performance: GPU acceleration for animated elements */
+.cart-panel,.modal-overlay,.lightbox,.toast{
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+}
+
 :root{
   --orange:#E8820C;
   --orange-dark:#C96E0A;
@@ -206,13 +212,18 @@ img{
   display:none;
   min-height:100vh;
   padding-top:64px;
-  will-change:auto;
+  contain:layout style;
 }
 
-.page.active{display:block;}
+.page.active{
+  display:block;
+  animation:pageFadeIn .18s ease-out;
+}
 
-/* ===== HOME PAGE ===== */
-#home-page{display:block;}
+@keyframes pageFadeIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
 
 /* HERO */
 .hero{
