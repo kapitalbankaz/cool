@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="Cool Food - Bakının ən dadlı burgerleri, hot-dogları və daha çoxu. Onlayn sifariş edin." />
+  <title>Cool Food — Burgerlər, Hot-Dog &amp; Daha çox</title>
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preload" href="images/logo.png" as="image" />
+  <link rel="preload" href="images/hotdog-hero.jpg" as="image" />
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar" role="navigation" aria-label="Əsas naviqasiya">
+  <div class="navbar-inner">
+    <a class="nav-logo" onclick="showPage('home')" role="button" tabindex="0" aria-label="Ana Səhifə">
+      <img src="images/logo.png" alt="Cool Food Logo" />
+      <span class="nav-logo-text">COOL FOOD</span>
+    </a>
+
+    <ul class="nav-menu">
+      <li><button onclick="showPage('home')">🏠 Ana Səhifə</button></li>
+      <li><button onclick="showPage('menu')">🍔 Menyu</button></li>
+      <li><button onclick="showPage('gallery')">📸 Qalerya</button></li>
+      <li><button onclick="showPage('reservation')">📅 Rezervasiya</button></li>
+      <li><button onclick="showPage('faq')">❓ FAQ</button></li>
+      <li><button onclick="showPage('vacancies')">💼 Vakansiyalar</button></li>
+      <li>
+        <button class="nav-cart-btn" onclick="toggleCart()" aria-label="Səbət">
+          🛒 Səbət
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+      </li>
+    </ul>
+
+    <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menyunu aç">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<nav class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobil naviqasiya">
+  <button onclick="showPage('home'); closeMobileMenu()">🏠 Ana Səhifə</button>
+  <button onclick="showPage('menu'); closeMobileMenu()">🍔 Menyu</button>
+  <button onclick="showPage('gallery'); closeMobileMenu()">📸 Qalerya</button>
+  <button onclick="showPage('reservation'); closeMobileMenu()">📅 Rezervasiya</button>
+  <button onclick="showPage('faq'); closeMobileMenu()">❓ FAQ</button>
+  <button onclick="showPage('vacancies'); closeMobileMenu()">💼 Vakansiyalar</button>
+  <button onclick="toggleCart(); closeMobileMenu()">🛒 Səbət</button>
+</nav>
+
+<!-- ===================== HOME PAGE ===================== -->
+<main id="home-page" class="page active">
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Əsas banner">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Ən <span>Dadlı</span><br/>Burgerlər<br/>Bakıda!</h1>
+        <p>Cool Food ilə hər gün taze, lezzetli burgerlerin, hot-dogların və daha çox məhsulun zövqünü çıxarın. Keyfiyyət bizim öhdəliyimizdir.</p>
+        <div class="hero-buttons">
+          <button class="btn-primary" onclick="showPage('menu')">🍔 Menyuya Bax</button>
+          <button class="btn-secondary" onclick="showPage('reservation')">📅 Masa Ayırt Et</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-logo-big">
+          <img src="images/logo.png" alt="Cool Food" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="quick-stats" aria-label="Statistika">
+    <div class="quick-stats-inner">
+      <div class="stat-item">
+        <strong>50+</strong>
+        <span>Menyu maddəsi</span>
+      </div>
+      <div class="stat-item">
+        <strong>5000+</strong>
+        <span>Məmnun müştəri</span>
+      </div>
+      <div class="stat-item">
+        <strong>3+</strong>
+        <span>İl təcrübə</span>
+      </div>
+      <div class="stat-item">
+        <strong>⭐ 4.9</strong>
+        <span>Ortalama qiymət</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="section" id="home-about" aria-label="Haqqımızda">
+    <div class="section-inner">
+      <p class="section-subtitle" style="color: var(--orange); font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Haqqımızda</p>
+      <h2 class="section-title">Biz kimik?</h2>
+      <p class="section-subtitle">Cool Food Bakının ürəyindəki ən dadlı fast-food restoranıdır. Hər gün təzə hazırlanan menyumuzla sizlərə ən yüksək keyfiyyəti təqdim edirik.</p>
+
+      <div class="about-grid">
+        <div class="about-image">
+          <img src="images/hotdog-hero.jpg" alt="Cool Food məhsulları" loading="lazy" />
+        </div>
+        <div>
+          <p style="font-size:1.05rem; color:var(--gray); line-height:1.9; margin-bottom:28px;">
+            Cool Food, 2021-ci ildən Bakıda xidmət göstərən premium fast-food restoranıdır. Biz hər gün yeni ideyalar, yeni reseptlər və ən keyfiyyətli inqredientlər ilə sizin üçün ən yaxşı yeməkləri hazırlayırıq.
+            <br/><br/>
+            Koko Burger, Hot-Dog, Salat, Şorba və daha onlarca seçim ilə hər damağa uyğun menyu təqdim edirik. Keyfiyyət, sürət və müştəri məmnuniyyəti bizim prioritetimizdir.
+          </p>
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="feature-icon">🥩</div>
+              <div class="feature-text">
+                <h4>Təzə İnqredientlər</h4>
+                <p>Hər gün yeni gələn, keyfiyyətli məhsullar</p>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-text">
+                <h4>Sürətli Xidmət</h4>
+                <p>Sifarişiniz dəqiq vaxtında hazır olur</p>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="feature-icon">🏆</div>
+              <div class="feature-text">
+                <h4>Keyfiyyət Zəmanəti</h4>
+                <p>Hər məhsul üçün tam keyfiyyət</p>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="feature-icon">💝</div>
+              <div class="feature-text">
+                <h4>Sevgiylə Hazırlanır</h4>
+                <p>Hər burger böyük həvəslə bişirilir</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOURS -->
+  <section class="hours-section" id="home-hours" aria-label="İş saatları">
+    <div class="section-inner">
+      <p class="section-subtitle" style="color: var(--orange); font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Vaxt Cədvəli</p>
+      <h2 class="section-title">İş Saatları</h2>
+      <p class="section-subtitle">Bizə istənilən vaxt gəlin – səhərdən gecəyə qədər xidmətinizdəyik</p>
+
+      <div class="hours-grid">
+        <div class="hours-card">
+          <div class="hours-card-header">
+            <span>🕐</span> Həftəlik Cədvəl
+          </div>
+          <div class="hours-list">
+            <div class="hours-row">
+              <span class="day">Bazar ertəsi</span>
+              <span class="time">10:00 – 23:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Çərşənbə axşamı</span>
+              <span class="time">10:00 – 23:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Çərşənbə</span>
+              <span class="time">10:00 – 23:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Cümə axşamı</span>
+              <span class="time">10:00 – 23:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Cümə</span>
+              <span class="time">10:00 – 00:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Şənbə</span>
+              <span class="time">11:00 – 00:00</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Bazar</span>
+              <span class="time">11:00 – 23:00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hours-info">
+          <div class="info-card">
+            <div class="info-card-icon">📍</div>
+            <div class="info-card-text">
+              <h4>Ünvanımız</h4>
+              <p>Bakı şəhərindəki yeni məkanda sizlərə xidmət göstəririk. Yaxında yeni ünvan elan olunacaq!</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">📞</div>
+            <div class="info-card-text">
+              <h4>Rezervasiya &amp; Əlaqə</h4>
+              <p>+994 55 940 60 18<br/>Hər gün 10:00 – 22:00 arası zəng edə bilərsiniz</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-icon">🚗</div>
+            <div class="info-card-text">
+              <h4>Çatdırılma</h4>
+              <p>Onlayn sifariş verin, isti-isti qapınıza çatdırılsın!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="home-contact" aria-label="Əlaqə">
+    <div class="section-inner">
+      <p class="section-subtitle" style="color: var(--orange); font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Bizimlə Əlaqə</p>
+      <h2 class="section-title">Əlaqə</h2>
+      <p class="section-subtitle">Hər hansı sualınız olduqda bizimlə əlaqə saxlayın</p>
+
+      <div class="contact-grid">
+        <a class="contact-card" href="https://wa.me/994559406018" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ilə əlaqə">
+          <div class="contact-card-icon whatsapp">💬</div>
+          <h3>WhatsApp</h3>
+          <p>+994 55 940 60 18<br/>Birbaşa mesaj göndərin</p>
+        </a>
+
+        <a class="contact-card" href="https://www.instagram.com/coolfood.az/" target="_blank" rel="noopener noreferrer" aria-label="Instagram səhifəmiz">
+          <div class="contact-card-icon instagram">📷</div>
+          <h3>Instagram</h3>
+          <p>@coolfood.az<br/>Bizi izləyin</p>
+        </a>
+
+        <a class="contact-card" href="https://www.google.com/maps/place/Bak%C4%B1/@40.3947365,49.6898016,32622m/data=!3m2!1e3!4b1!4m6!3m5!1s0x40307d6bd6211cf9:0x343f6b5e7ae56c6b!8m2!3d40.4092617!4d49.8670924!16zL20vMDFnZjU?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Xəritədə görün">
+          <div class="contact-card-icon location">📍</div>
+          <h3>Ünvan</h3>
+          <p>Bakı, Azərbaycan<br/>Xəritədə görün</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== MENU PAGE ===================== -->
+<div id="menu-page" class="page">
+  <div class="sub-page-header">
+    <div style="max-width:1200px;margin:0 auto;">
+      <button class="back-btn" onclick="goBack()">← Geri</button>
+      <h1 class="sub-page-title">🍔 Menyu</h1>
+      <p class="sub-page-subtitle">Ən dadlı seçimlərimizi kəşf edin</p>
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="menu-tabs">
+    <div class="menu-tabs-inner">
+      <button class="menu-tab active" onclick="switchMenuTab('hotdog', this)">🌭 Hot-Dog</button>
+      <button class="menu-tab" onclick="switchMenuTab('qelyanalt', this)">🍟 Qəlyanaltı</button>
+      <button class="menu-tab" onclick="switchMenuTab('burger', this)">🍔 Burger</button>
+      <button class="menu-tab" onclick="switchMenuTab('sorba', this)">🍲 Şorba</button>
+      <button class="menu-tab" onclick="switchMenuTab('soyuq', this)">🧊 Soyuq İçkilər</button>
+      <button class="menu-tab" onclick="switchMenuTab('isti', this)">☕ İsti İçkilər</button>
+      <button class="menu-tab" onclick="switchMenuTab('extra', this)">➕ Extra</button>
+    </div>
+  </div>
+
+  <div class="menu-sections-wrapper">
+
+    <!-- HOT-DOG -->
+    <section class="menu-section active" id="section-hotdog" aria-label="Hot-Dog menyusu">
+      <h2 class="menu-section-title">🌭 Hot-Dog</h2>
+      <div class="menu-grid" id="grid-hotdog"></div>
+    </section>
+
+    <!-- QƏLYANALTI -->
+    <section class="menu-section" id="section-qelyanalt" aria-label="Qəlyanaltı menyusu">
+      <h2 class="menu-section-title">🍟 Qəlyanaltı</h2>
+      <div class="menu-grid" id="grid-qelyanalt"></div>
+    </section>
+
+    <!-- BURGER -->
+    <section class="menu-section" id="section-burger" aria-label="Burger menyusu">
+      <h2 class="menu-section-title">🍔 Burger</h2>
+      <div class="menu-grid" id="grid-burger"></div>
+    </section>
+
+    <!-- ŞORBA -->
+    <section class="menu-section" id="section-sorba" aria-label="Şorba menyusu">
+      <h2 class="menu-section-title">🍲 Şorba</h2>
+      <div class="menu-grid" id="grid-sorba"></div>
+    </section>
+
+    <!-- SOYUQ İÇKİLƏR -->
+    <section class="menu-section" id="section-soyuq" aria-label="Soyuq İçkilər menyusu">
+      <h2 class="menu-section-title">🧊 Soyuq İçkilər</h2>
+      <div class="menu-list-grid" id="grid-soyuq"></div>
+    </section>
+
+    <!-- İSTİ İÇKİLƏR -->
+    <section class="menu-section" id="section-isti" aria-label="İsti İçkilər menyusu">
+      <h2 class="menu-section-title">☕ İsti İçkilər</h2>
+      <div class="menu-list-grid" id="grid-isti"></div>
+    </section>
+
+    <!-- EXTRA -->
+    <section class="menu-section" id="section-extra" aria-label="Extra menyusu">
+      <h2 class="menu-section-title">➕ Extra</h2>
+      <div class="menu-list-grid" id="grid-extra"></div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ===================== GALLERY PAGE ===================== -->
+<div id="gallery-page" class="page">
+  <div class="sub-page-header">
+    <div style="max-width:1200px;margin:0 auto;">
+      <button class="back-btn" onclick="goBack()">← Geri</button>
+      <h1 class="sub-page-title">📸 Qalerya</h1>
+      <p class="sub-page-subtitle">Ən gözəl anlarımız</p>
+    </div>
+  </div>
+  <div class="sub-page-content">
+    <div class="gallery-grid">
+      <div class="gallery-item" onclick="openLightbox('images/hotdog-hero.jpg')" role="button" tabindex="0" aria-label="Hot-Dog şəkli">
+        <img src="images/hotdog-hero.jpg" alt="Cool Food Hot-Dog" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/promo-banner.jpg')" role="button" tabindex="0" aria-label="Promo banner">
+        <img src="images/promo-banner.jpg" alt="Cool Food Promo" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('images/logo.png')" role="button" tabindex="0" aria-label="Cool Food Logo">
+        <img src="images/logo.png" alt="Cool Food Logo" loading="lazy" style="object-fit:contain;background:#f5f5f5;padding:20px;" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== RESERVATION PAGE ===================== -->
+<div id="reservation-page" class="page">
+  <div class="sub-page-header">
+    <div style="max-width:1200px;margin:0 auto;">
+      <button class="back-btn" onclick="goBack()">← Geri</button>
+      <h1 class="sub-page-title">📅 Rezervasiya</h1>
+      <p class="sub-page-subtitle">Masanızı əvvəlcədən ayırtın</p>
+    </div>
+  </div>
+  <div class="sub-page-content">
+    <div class="reservation-form-card">
+      <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px;color:var(--dark);">Masa Rezervasiyası</h3>
+      <p style="font-size:0.9rem;color:var(--gray);margin-bottom:28px;">Məlumatları doldurun, sifarişiniz WhatsApp vasitəsilə bizdə görünəcək.</p>
+
+      <form id="reservation-form" onsubmit="submitReservation(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="res-name">👤 Adınız *</label>
+            <input class="form-input" id="res-name" type="text" placeholder="Adınızı daxil edin" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="res-phone">📞 Telefon *</label>
+            <input class="form-input" id="res-phone" type="tel" placeholder="+994 XX XXX XX XX" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="res-date">📅 Tarix *</label>
+            <input class="form-input" id="res-date" type="date" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="res-time">🕐 Saat *</label>
+            <input class="form-input" id="res-time" type="time" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="res-persons">👥 Nəfər sayı *</label>
+          <select class="form-input" id="res-persons" required>
+            <option value="">Seçin...</option>
+            <option value="1">1 nəfər</option>
+            <option value="2">2 nəfər</option>
+            <option value="3">3 nəfər</option>
+            <option value="4">4 nəfər</option>
+            <option value="5">5 nəfər</option>
+            <option value="6+">6+ nəfər</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="res-note">📝 Qeyd (ixtiyari)</label>
+          <textarea class="form-input" id="res-note" rows="3" placeholder="Hər hansı xüsusi istəyiniz..."></textarea>
+        </div>
+        <button type="submit" class="form-submit-btn">
+          💬 WhatsApp ilə Göndər
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FAQ PAGE ===================== -->
+<div id="faq-page" class="page">
+  <div class="sub-page-header">
+    <div style="max-width:1200px;margin:0 auto;">
+      <button class="back-btn" onclick="goBack()">← Geri</button>
+      <h1 class="sub-page-title">❓ Tez-tez verilən suallar</h1>
+      <p class="sub-page-subtitle">Ən çox soruşulan suallar</p>
+    </div>
+  </div>
+  <div class="sub-page-content">
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Cool Food-un iş saatları nələrdir?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Həftə içi (B.E – C.) saat 10:00-dan 23:00-dək, Cümə günü 00:00-dək, Şənbə 11:00–00:00, Bazar 11:00–23:00 arası açıqıq. Bayram günlərindəki dəyişikliklər üçün sosial media hesablarımızı izləyin.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Ev çatdırılması mövcuddurmu?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Bəli! Onlayn sifariş platformaları vasitəsilə Bakı daxilindəki bir çox ünvana çatdırılma xidmətimiz mövcuddur. Detallar üçün WhatsApp üzərindən bizimlə əlaqə saxlayın.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Rezervasiya necə edilir?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Saytımızdakı "Rezervasiya" bölməsindən formu doldurun. Məlumatlarınız avtomatik olaraq WhatsApp vasitəsilə bizə çatır və biz sizinlə əlaqə saxlayırıq.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Vegetarian seçimlər varmı?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Bəli! Menyumuzda Vegetarian Burger, Sendviç Vegetarian kimi seçimlər mövcuddur. Ətraflı məlumat üçün menyumuza baxın.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Qrup sifarişi vermək mümkündürmü?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Əlbəttə! Böyük qrup sifarişləri üçün WhatsApp: +994 55 940 60 18 nömrəsinə əlaqə saxlayın. Korporativ tədbirlər üçün xüsusi endirimlər təqdim edirik.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Ödəniş üsulları nələrdir?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Nağd ödəniş, bank kartı (Visa, Mastercard) və onlayn ödəniş sistemləri qəbul olunur. Ətraflı məlumat üçün bizimlə əlaqə saxlayın.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Allergen məlumatı almaq mümkündürmü?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Hər hansı allergeniniz varsa, sifariş vermədən əvvəl WhatsApp vasitəsilə bizimlə əlaqə saxlayın. Komandamız sizə lazımlı məlumatı verəcəkdir.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+          Menyu tez-tez dəyişirmi?
+          <div class="faq-icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Mövsümi xüsusi menyu maddələri əlavə edirik. Ən son yeniliklər üçün Instagram hesabımız @coolfood.az-ı izləyin.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== VACANCIES PAGE ===================== -->
+<div id="vacancies-page" class="page">
+  <div class="sub-page-header">
+    <div style="max-width:1200px;margin:0 auto;">
+      <button class="back-btn" onclick="goBack()">← Geri</button>
+      <h1 class="sub-page-title">💼 Vakansiyalar</h1>
+      <p class="sub-page-subtitle">Komandamıza qoşulun</p>
+    </div>
+  </div>
+  <div class="sub-page-content">
+    <div class="vacancies-grid" id="vacancies-grid"></div>
+  </div>
+</div>
+
+<!-- ===================== CART PANEL ===================== -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<aside class="cart-panel" id="cart-panel" role="complementary" aria-label="Alış-veriş səbəti">
+  <div class="cart-header">
+    <h3>🛒 Səbətim</h3>
+    <button class="cart-close" onclick="toggleCart()" aria-label="Səbəti bağla">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty" id="cart-empty">
+      <span>🛒</span>
+      <p>Səbət boşdur</p>
+      <p style="font-size:0.85rem;margin-top:6px;">Menyu bölməsindən məhsul əlavə edin</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-total">
+      <span class="label">Cəmi:</span>
+      <span class="amount" id="cart-total-amount">0.00 ₼</span>
+    </div>
+    <button class="cart-order-btn" onclick="placeOrder()">
+      💬 WhatsApp ilə Sifariş Et
+    </button>
+  </div>
+</aside>
+
+<!-- ===================== PRODUCT MODAL ===================== -->
+<div class="modal-overlay" id="product-modal-overlay" onclick="closeProductModal(event)" role="dialog" aria-modal="true" aria-label="Məhsul detalları">
+  <div class="product-modal product-modal-wrapper" id="product-modal-content">
+    <button class="modal-close-btn" onclick="closeProductModal(null, true)" aria-label="Bağla">✕</button>
+    <div id="product-modal-inner"></div>
+  </div>
+</div>
+
+<!-- ===================== VACANCY MODAL ===================== -->
+<div class="modal-overlay" id="vacancy-modal-overlay" onclick="closeVacancyModal(event)" role="dialog" aria-modal="true" aria-label="Vakansiya detalları">
+  <div class="vacancy-modal" id="vacancy-modal-content">
+    <button class="modal-close-btn" onclick="closeVacancyModal(null, true)" aria-label="Bağla">✕</button>
+    <div id="vacancy-modal-inner"></div>
+  </div>
+</div>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()" role="dialog" aria-label="Şəkil görünüşü">
+  <button class="lightbox-close" aria-label="Bağla">✕</button>
+  <img id="lightbox-img" src="" alt="Böyük şəkil" />
+</div>
+
+<!-- ===================== TOAST ===================== -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
