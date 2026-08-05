@@ -7,8 +7,9 @@
   <title>Cool Food — Burgerlər, Hot-Dog &amp; Daha çox</title>
   <link rel="icon" type="image/png" href="images/logo.png" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="preload" href="images/logo.png" as="image" />
-  <link rel="preload" href="images/hotdog-hero.jpg" as="image" />
+  <link rel="preload" href="images/logo.png" as="image" fetchpriority="high" />
+  <link rel="preload" href="images/hotdog-hero.jpg" as="image" fetchpriority="high" />
+  <link rel="dns-prefetch" href="https://wa.me" />
 </head>
 <body>
 
@@ -16,7 +17,7 @@
 <nav class="navbar" role="navigation" aria-label="Əsas naviqasiya">
   <div class="navbar-inner">
     <a class="nav-logo" onclick="showPage('home')" role="button" tabindex="0" aria-label="Ana Səhifə">
-      <img src="images/logo.png" alt="Cool Food Logo" />
+      <img src="images/logo.png" alt="Cool Food Logo" width="44" height="44" />
       <span class="nav-logo-text">COOL FOOD</span>
     </a>
 
@@ -35,9 +36,14 @@
       </li>
     </ul>
 
-    <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menyunu aç">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-right-mobile">
+      <button class="nav-cart-btn-mobile" onclick="toggleCart()" aria-label="Səbət">
+        🛒 <span class="cart-badge-mobile" id="cart-badge-mobile">0</span>
+      </button>
+      <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menyunu aç">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -49,7 +55,6 @@
   <button onclick="showPage('reservation'); closeMobileMenu()">📅 Rezervasiya</button>
   <button onclick="showPage('faq'); closeMobileMenu()">❓ FAQ</button>
   <button onclick="showPage('vacancies'); closeMobileMenu()">💼 Vakansiyalar</button>
-  <button onclick="toggleCart(); closeMobileMenu()">🛒 Səbət</button>
 </nav>
 
 <!-- ===================== HOME PAGE ===================== -->
@@ -69,7 +74,7 @@
       </div>
       <div class="hero-image">
         <div class="hero-logo-big">
-          <img src="images/logo.png" alt="Cool Food" />
+          <img src="images/logo.png" alt="Cool Food" width="240" height="240" />
         </div>
       </div>
     </div>
@@ -97,66 +102,14 @@
     </div>
   </div>
 
-  <!-- ABOUT -->
-  <section class="section" id="home-about" aria-label="Haqqımızda">
-    <div class="section-inner">
-      <p class="section-subtitle" style="color: var(--orange); font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Haqqımızda</p>
-      <h2 class="section-title">Biz kimik?</h2>
-      <p class="section-subtitle">Cool Food Bakının ürəyindəki ən dadlı fast-food restoranıdır. Hər gün təzə hazırlanan menyumuzla sizlərə ən yüksək keyfiyyəti təqdim edirik.</p>
-
-      <div class="about-grid">
-        <div class="about-image">
-          <img src="images/hotdog-hero.jpg" alt="Cool Food məhsulları" loading="lazy" />
-        </div>
-        <div>
-          <p style="font-size:1.05rem; color:var(--gray); line-height:1.9; margin-bottom:28px;">
-            Cool Food, 2021-ci ildən Bakıda xidmət göstərən premium fast-food restoranıdır. Biz hər gün yeni ideyalar, yeni reseptlər və ən keyfiyyətli inqredientlər ilə sizin üçün ən yaxşı yeməkləri hazırlayırıq.
-            <br/><br/>
-            Koko Burger, Hot-Dog, Salat, Şorba və daha onlarca seçim ilə hər damağa uyğun menyu təqdim edirik. Keyfiyyət, sürət və müştəri məmnuniyyəti bizim prioritetimizdir.
-          </p>
-          <div class="about-features">
-            <div class="about-feature">
-              <div class="feature-icon">🥩</div>
-              <div class="feature-text">
-                <h4>Təzə İnqredientlər</h4>
-                <p>Hər gün yeni gələn, keyfiyyətli məhsullar</p>
-              </div>
-            </div>
-            <div class="about-feature">
-              <div class="feature-icon">⚡</div>
-              <div class="feature-text">
-                <h4>Sürətli Xidmət</h4>
-                <p>Sifarişiniz dəqiq vaxtında hazır olur</p>
-              </div>
-            </div>
-            <div class="about-feature">
-              <div class="feature-icon">🏆</div>
-              <div class="feature-text">
-                <h4>Keyfiyyət Zəmanəti</h4>
-                <p>Hər məhsul üçün tam keyfiyyət</p>
-              </div>
-            </div>
-            <div class="about-feature">
-              <div class="feature-icon">💝</div>
-              <div class="feature-text">
-                <h4>Sevgiylə Hazırlanır</h4>
-                <p>Hər burger böyük həvəslə bişirilir</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- HOURS -->
   <section class="hours-section" id="home-hours" aria-label="İş saatları">
     <div class="section-inner">
-      <p class="section-subtitle" style="color: var(--orange); font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Vaxt Cədvəli</p>
+      <p class="section-label">Vaxt Cədvəli</p>
       <h2 class="section-title">İş Saatları</h2>
       <p class="section-subtitle">Bizə istənilən vaxt gəlin – səhərdən gecəyə qədər xidmətinizdəyik</p>
 
-      <div class="hours-grid">
+      <div class="hours-single">
         <div class="hours-card">
           <div class="hours-card-header">
             <span>🕐</span> Həftəlik Cədvəl
@@ -192,30 +145,6 @@
             </div>
           </div>
         </div>
-
-        <div class="hours-info">
-          <div class="info-card">
-            <div class="info-card-icon">📍</div>
-            <div class="info-card-text">
-              <h4>Ünvanımız</h4>
-              <p>Bakı şəhərindəki yeni məkanda sizlərə xidmət göstəririk. Yaxında yeni ünvan elan olunacaq!</p>
-            </div>
-          </div>
-          <div class="info-card">
-            <div class="info-card-icon">📞</div>
-            <div class="info-card-text">
-              <h4>Rezervasiya &amp; Əlaqə</h4>
-              <p>+994 55 940 60 18<br/>Hər gün 10:00 – 22:00 arası zəng edə bilərsiniz</p>
-            </div>
-          </div>
-          <div class="info-card">
-            <div class="info-card-icon">🚗</div>
-            <div class="info-card-text">
-              <h4>Çatdırılma</h4>
-              <p>Onlayn sifariş verin, isti-isti qapınıza çatdırılsın!</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -223,8 +152,8 @@
   <!-- CONTACT -->
   <section class="contact-section" id="home-contact" aria-label="Əlaqə">
     <div class="section-inner">
-      <p class="section-subtitle" style="color: var(--orange); font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Bizimlə Əlaqə</p>
-      <h2 class="section-title">Əlaqə</h2>
+      <p class="section-label">Bizimlə Əlaqə</p>
+      <h2 class="section-title">Əlaqə Məlumatları</h2>
       <p class="section-subtitle">Hər hansı sualınız olduqda bizimlə əlaqə saxlayın</p>
 
       <div class="contact-grid">
@@ -254,7 +183,7 @@
 <!-- ===================== MENU PAGE ===================== -->
 <div id="menu-page" class="page">
   <div class="sub-page-header">
-    <div style="max-width:1200px;margin:0 auto;">
+    <div class="sub-page-header-inner">
       <button class="back-btn" onclick="goBack()">← Geri</button>
       <h1 class="sub-page-title">🍔 Menyu</h1>
       <p class="sub-page-subtitle">Ən dadlı seçimlərimizi kəşf edin</p>
@@ -324,7 +253,7 @@
 <!-- ===================== GALLERY PAGE ===================== -->
 <div id="gallery-page" class="page">
   <div class="sub-page-header">
-    <div style="max-width:1200px;margin:0 auto;">
+    <div class="sub-page-header-inner">
       <button class="back-btn" onclick="goBack()">← Geri</button>
       <h1 class="sub-page-title">📸 Qalerya</h1>
       <p class="sub-page-subtitle">Ən gözəl anlarımız</p>
@@ -333,13 +262,13 @@
   <div class="sub-page-content">
     <div class="gallery-grid">
       <div class="gallery-item" onclick="openLightbox('images/hotdog-hero.jpg')" role="button" tabindex="0" aria-label="Hot-Dog şəkli">
-        <img src="images/hotdog-hero.jpg" alt="Cool Food Hot-Dog" loading="lazy" />
+        <img src="images/hotdog-hero.jpg" alt="Cool Food Hot-Dog" loading="lazy" width="400" height="300" />
       </div>
       <div class="gallery-item" onclick="openLightbox('images/promo-banner.jpg')" role="button" tabindex="0" aria-label="Promo banner">
-        <img src="images/promo-banner.jpg" alt="Cool Food Promo" loading="lazy" />
+        <img src="images/promo-banner.jpg" alt="Cool Food Promo" loading="lazy" width="400" height="300" />
       </div>
       <div class="gallery-item" onclick="openLightbox('images/logo.png')" role="button" tabindex="0" aria-label="Cool Food Logo">
-        <img src="images/logo.png" alt="Cool Food Logo" loading="lazy" style="object-fit:contain;background:#f5f5f5;padding:20px;" />
+        <img src="images/logo.png" alt="Cool Food Logo" loading="lazy" style="object-fit:contain;background:#f5f5f5;padding:20px;" width="400" height="300" />
       </div>
     </div>
   </div>
@@ -348,7 +277,7 @@
 <!-- ===================== RESERVATION PAGE ===================== -->
 <div id="reservation-page" class="page">
   <div class="sub-page-header">
-    <div style="max-width:1200px;margin:0 auto;">
+    <div class="sub-page-header-inner">
       <button class="back-btn" onclick="goBack()">← Geri</button>
       <h1 class="sub-page-title">📅 Rezervasiya</h1>
       <p class="sub-page-subtitle">Masanızı əvvəlcədən ayırtın</p>
@@ -363,11 +292,11 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="res-name">👤 Adınız *</label>
-            <input class="form-input" id="res-name" type="text" placeholder="Adınızı daxil edin" required />
+            <input class="form-input" id="res-name" type="text" placeholder="Adınızı daxil edin" required autocomplete="name" />
           </div>
           <div class="form-group">
             <label class="form-label" for="res-phone">📞 Telefon *</label>
-            <input class="form-input" id="res-phone" type="tel" placeholder="+994 XX XXX XX XX" required />
+            <input class="form-input" id="res-phone" type="tel" placeholder="+994 XX XXX XX XX" required autocomplete="tel" />
           </div>
         </div>
         <div class="form-row">
@@ -407,7 +336,7 @@
 <!-- ===================== FAQ PAGE ===================== -->
 <div id="faq-page" class="page">
   <div class="sub-page-header">
-    <div style="max-width:1200px;margin:0 auto;">
+    <div class="sub-page-header-inner">
       <button class="back-btn" onclick="goBack()">← Geri</button>
       <h1 class="sub-page-title">❓ Tez-tez verilən suallar</h1>
       <p class="sub-page-subtitle">Ən çox soruşulan suallar</p>
@@ -494,7 +423,7 @@
 <!-- ===================== VACANCIES PAGE ===================== -->
 <div id="vacancies-page" class="page">
   <div class="sub-page-header">
-    <div style="max-width:1200px;margin:0 auto;">
+    <div class="sub-page-header-inner">
       <button class="back-btn" onclick="goBack()">← Geri</button>
       <h1 class="sub-page-title">💼 Vakansiyalar</h1>
       <p class="sub-page-subtitle">Komandamıza qoşulun</p>
@@ -555,7 +484,7 @@
 <!-- ===================== TOAST ===================== -->
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/data.js" defer></script>
+<script src="js/app.js" defer></script>
 </body>
 </html>

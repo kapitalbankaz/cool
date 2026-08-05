@@ -5,7 +5,6 @@
 const state = {
   currentPage: 'home',
   prevPage: 'home',
-  scrollPositions: {},
   cart: [],
   cartOpen: false,
   mobileMenuOpen: false
@@ -13,112 +12,97 @@ const state = {
 
 // ===== PAGE NAVIGATION =====
 function showPage(page) {
-  // Save current scroll position
-  state.scrollPositions[state.currentPage] = window.scrollY;
-
-  // Hide all pages
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
-  // Show target page
+  const current = document.getElementById(state.currentPage + '-page');
   const target = document.getElementById(page + '-page');
-  if (!target) return;
+  if (!target || page === state.currentPage) return;
+
+  if (current) current.classList.remove('active');
 
   state.prevPage = state.currentPage;
   state.currentPage = page;
 
   target.classList.add('active');
   closeMobileMenu();
-
-  // Restore scroll position or go to top
-  const savedPos = state.scrollPositions[page];
-  if (savedPos !== undefined) {
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: savedPos, behavior: 'instant' });
-    });
-  } else {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }
+  window.scrollTo(0, 0);
 }
 
 function goBack() {
-  // Save scroll of current sub-page
-  state.scrollPositions[state.currentPage] = window.scrollY;
   showPage(state.prevPage || 'home');
 }
 
 // ===== MOBILE MENU =====
 function toggleMobileMenu() {
   state.mobileMenuOpen = !state.mobileMenuOpen;
-  const nav = document.getElementById('mobile-nav');
-  nav.classList.toggle('open', state.mobileMenuOpen);
+  document.getElementById('mobile-nav').classList.toggle('open', state.mobileMenuOpen);
 }
 
 function closeMobileMenu() {
+  if (!state.mobileMenuOpen) return;
   state.mobileMenuOpen = false;
   document.getElementById('mobile-nav').classList.remove('open');
 }
 
 // ===== MENU TAB SWITCHING =====
 function switchMenuTab(category, btn) {
-  // Deactivate all tabs and sections
-  document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+  const tabs = document.querySelectorAll('.menu-tab');
+  const sections = document.querySelectorAll('.menu-section');
 
-  // Activate clicked tab and its section
+  tabs.forEach(t => t.classList.remove('active'));
+  sections.forEach(s => s.classList.remove('active'));
+
   btn.classList.add('active');
   const section = document.getElementById('section-' + category);
   if (section) {
     section.classList.add('active');
-    // Scroll to top of menu content
-    const wrapper = document.querySelector('.menu-sections-wrapper');
-    if (wrapper) wrapper.scrollTop = 0;
-    window.scrollTo({ top: document.querySelector('.menu-tabs').offsetTop - 64, behavior: 'smooth' });
+    const tabsEl = document.querySelector('.menu-tabs');
+    if (tabsEl) {
+      const offset = tabsEl.getBoundingClientRect().top + window.scrollY - 64;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
   }
 }
 
 // ===== RENDER MENU =====
 function renderMenuCard(item) {
-  const hasImage = item.image;
-  const imgHtml = hasImage
-    ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy" />`
+  const imgHtml = item.image
+    ? `<img class="menu-card-img" src="${item.image}" alt="${item.name}" loading="lazy" width="260" height="180" />`
     : `<div class="menu-card-img-placeholder">${item.emoji}</div>`;
 
-  return `
-    <article class="menu-card" onclick="openProductModal('${item.id}')" role="button" tabindex="0"
-      onkeydown="if(event.key==='Enter')openProductModal('${item.id}')"
-      aria-label="${item.name} - ${item.price.toFixed(2)} ₼">
-      ${imgHtml}
-      <div class="menu-card-body">
-        <h3 class="menu-card-name">${item.name}</h3>
-        <p class="menu-card-desc">${item.desc}</p>
-        <div class="menu-card-footer">
-          <span class="menu-card-price">${item.price.toFixed(2)} ₼</span>
-          <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${item.id}')"
-            aria-label="${item.name} səbətə əlavə et">+</button>
-        </div>
+  return `<article class="menu-card" onclick="openProductModal('${item.id}')" role="button" tabindex="0"
+    onkeydown="if(event.key==='Enter')openProductModal('${item.id}')"
+    aria-label="${item.name} - ${item.price.toFixed(2)} ₼">
+    ${imgHtml}
+    <div class="menu-card-body">
+      <h3 class="menu-card-name">${item.name}</h3>
+      <p class="menu-card-desc">${item.desc}</p>
+      <div class="menu-card-footer">
+        <span class="menu-card-price">${item.price.toFixed(2)} ₼</span>
+        <button class="add-to-cart-btn" onclick="event.stopPropagation();addToCart('${item.id}')"
+          aria-label="${item.name} səbətə əlavə et">+</button>
       </div>
-    </article>
-  `;
+    </div>
+  </article>`;
 }
 
 function renderListCard(item) {
-  return `
-    <article class="menu-list-card" onclick="openProductModal('${item.id}')" role="button" tabindex="0"
-      onkeydown="if(event.key==='Enter')openProductModal('${item.id}')"
-      aria-label="${item.name} - ${item.price.toFixed(2)} ₼">
-      <div class="menu-list-card-info">
-        <div class="name">${item.emoji} ${item.name}</div>
-        <div class="price">${item.price.toFixed(2)} ₼</div>
-      </div>
-      <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${item.id}')"
-        aria-label="${item.name} səbətə əlavə et">+</button>
-    </article>
-  `;
+  return `<article class="menu-list-card" onclick="openProductModal('${item.id}')" role="button" tabindex="0"
+    onkeydown="if(event.key==='Enter')openProductModal('${item.id}')"
+    aria-label="${item.name} - ${item.price.toFixed(2)} ₼">
+    <div class="menu-list-card-info">
+      <div class="name">${item.emoji} ${item.name}</div>
+      <div class="price">${item.price.toFixed(2)} ₼</div>
+    </div>
+    <button class="add-to-cart-btn" onclick="event.stopPropagation();addToCart('${item.id}')"
+      aria-label="${item.name} səbətə əlavə et">+</button>
+  </article>`;
 }
 
 function buildMenuGrids() {
-  // Grid categories (with images)
   const gridCategories = ['hotdog', 'qelyanalt', 'burger', 'sorba'];
+  const listCategories = ['soyuq', 'isti', 'extra'];
+
+  const fragment = document.createDocumentFragment();
+
   gridCategories.forEach(cat => {
     const el = document.getElementById('grid-' + cat);
     if (el && MENU_DATA[cat]) {
@@ -126,8 +110,6 @@ function buildMenuGrids() {
     }
   });
 
-  // List categories (no images)
-  const listCategories = ['soyuq', 'isti', 'extra'];
   listCategories.forEach(cat => {
     const el = document.getElementById('grid-' + cat);
     if (el && MENU_DATA[cat]) {
@@ -138,8 +120,9 @@ function buildMenuGrids() {
 
 // ===== GET ITEM BY ID =====
 function getItemById(id) {
-  for (const cat of Object.values(MENU_DATA)) {
-    const found = cat.find(item => item.id === id);
+  const cats = Object.values(MENU_DATA);
+  for (let i = 0; i < cats.length; i++) {
+    const found = cats[i].find(item => item.id === id);
     if (found) return found;
   }
   return null;
@@ -157,17 +140,16 @@ function openProductModal(itemId) {
   document.getElementById('product-modal-inner').innerHTML = `
     ${imgHtml}
     <div class="product-modal-body">
-      <p style="font-size:0.82rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">${item.category}</p>
+      <p style="font-size:.82rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">${item.category}</p>
       <h2 class="product-modal-name">${item.name}</h2>
       <p class="product-modal-desc">${item.desc}</p>
       <p class="product-modal-price">${item.price.toFixed(2)} ₼</p>
       <div class="product-modal-actions">
-        <button class="modal-add-btn" onclick="addToCart('${item.id}'); closeProductModal(null,true)">
+        <button class="modal-add-btn" onclick="addToCart('${item.id}');closeProductModal(null,true)">
           + Səbətə Əlavə Et
         </button>
       </div>
-    </div>
-  `;
+    </div>`;
 
   document.getElementById('product-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -205,18 +187,15 @@ function changeQty(itemId, delta) {
   const item = state.cart.find(c => c.id === itemId);
   if (!item) return;
   item.qty += delta;
-  if (item.qty <= 0) {
-    removeFromCart(itemId);
-  } else {
-    updateCartUI();
-  }
+  if (item.qty <= 0) removeFromCart(itemId);
+  else updateCartUI();
 }
 
 function updateCartUI() {
   const totalItems = state.cart.reduce((s, c) => s + c.qty, 0);
   const totalPrice = state.cart.reduce((s, c) => s + c.price * c.qty, 0);
 
-  // Badge
+  // Desktop badge
   const badge = document.getElementById('cart-badge');
   if (totalItems > 0) {
     badge.textContent = totalItems;
@@ -225,7 +204,17 @@ function updateCartUI() {
     badge.classList.remove('show');
   }
 
-  // Cart items
+  // Mobile badge
+  const badgeMobile = document.getElementById('cart-badge-mobile');
+  if (badgeMobile) {
+    if (totalItems > 0) {
+      badgeMobile.textContent = totalItems;
+      badgeMobile.classList.add('show');
+    } else {
+      badgeMobile.classList.remove('show');
+    }
+  }
+
   const cartItemsEl = document.getElementById('cart-items');
   const cartEmptyEl = document.getElementById('cart-empty');
   const cartFooterEl = document.getElementById('cart-footer');
@@ -243,24 +232,22 @@ function updateCartUI() {
 
   cartItemsEl.innerHTML = state.cart.map(item => {
     const iconHtml = item.image
-      ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />`
+      ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" loading="lazy" />`
       : item.emoji;
 
-    return `
-      <div class="cart-item">
-        <div class="cart-item-icon">${iconHtml}</div>
-        <div class="cart-item-info">
-          <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} ₼</div>
-        </div>
-        <div class="cart-item-controls">
-          <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="Azalt">−</button>
-          <span class="qty-display">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="Artır">+</button>
-          <button class="cart-remove" onclick="removeFromCart('${item.id}')" aria-label="Sil">🗑</button>
-        </div>
+    return `<div class="cart-item">
+      <div class="cart-item-icon">${iconHtml}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} ₼</div>
       </div>
-    `;
+      <div class="cart-item-controls">
+        <button class="qty-btn" onclick="changeQty('${item.id}',-1)" aria-label="Azalt">−</button>
+        <span class="qty-display">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${item.id}',1)" aria-label="Artır">+</button>
+        <button class="cart-remove" onclick="removeFromCart('${item.id}')" aria-label="Sil">🗑</button>
+      </div>
+    </div>`;
   }).join('');
 
   document.getElementById('cart-total-amount').textContent = totalPrice.toFixed(2) + ' ₼';
@@ -281,9 +268,7 @@ function placeOrder() {
   msg += '📦 *Sifariş edilən məhsullar:*\n\n';
 
   state.cart.forEach((item, i) => {
-    msg += `${i + 1}. ${item.name}\n`;
-    msg += `   Miqdar: ${item.qty} ədəd\n`;
-    msg += `   Qiymət: ${(item.price * item.qty).toFixed(2)} ₼\n\n`;
+    msg += `${i + 1}. ${item.name}\n   Miqdar: ${item.qty} ədəd\n   Qiymət: ${(item.price * item.qty).toFixed(2)} ₼\n\n`;
   });
 
   const total = state.cart.reduce((s, c) => s + c.price * c.qty, 0);
@@ -292,9 +277,7 @@ function placeOrder() {
   msg += '━━━━━━━━━━━━━━━━━━\n\n';
   msg += '⏰ Sifariş vaxtı: ' + new Date().toLocaleString('az-AZ');
 
-  const encodedMsg = encodeURIComponent(msg);
-  const phone = '994559406018';
-  window.open('https://wa.me/' + phone + '?text=' + encodedMsg, '_blank');
+  window.open('https://wa.me/994559406018?text=' + encodeURIComponent(msg), '_blank');
 }
 
 // ===== RESERVATION =====
@@ -313,26 +296,18 @@ function submitReservation(e) {
     return;
   }
 
-  const dateObj = new Date(date);
-  const formattedDate = dateObj.toLocaleDateString('az-AZ', {
+  const formattedDate = new Date(date).toLocaleDateString('az-AZ', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
   });
 
   let msg = '📅 *COOL FOOD — MASA REZERVASİYASI*\n\n';
   msg += '━━━━━━━━━━━━━━━━━━\n';
-  msg += `👤 *Ad:* ${name}\n`;
-  msg += `📞 *Telefon:* ${phone}\n`;
-  msg += `📅 *Tarix:* ${formattedDate}\n`;
-  msg += `🕐 *Saat:* ${time}\n`;
-  msg += `👥 *Nəfər sayı:* ${persons}\n`;
+  msg += `👤 *Ad:* ${name}\n📞 *Telefon:* ${phone}\n📅 *Tarix:* ${formattedDate}\n🕐 *Saat:* ${time}\n👥 *Nəfər sayı:* ${persons}\n`;
   if (note) msg += `📝 *Qeyd:* ${note}\n`;
   msg += '━━━━━━━━━━━━━━━━━━\n';
   msg += '⏰ Göndərilmə vaxtı: ' + new Date().toLocaleString('az-AZ');
 
-  const encodedMsg = encodeURIComponent(msg);
-  const waPhone = '994559406018';
-  window.open('https://wa.me/' + waPhone + '?text=' + encodedMsg, '_blank');
-
+  window.open('https://wa.me/994559406018?text=' + encodeURIComponent(msg), '_blank');
   showToast('✅ Rezervasiya WhatsApp-a göndərildi!', 'success');
   document.getElementById('reservation-form').reset();
 }
@@ -342,13 +317,11 @@ function toggleFaq(btn) {
   const item = btn.closest('.faq-item');
   const isOpen = item.classList.contains('open');
 
-  // Close all
-  document.querySelectorAll('.faq-item').forEach(f => {
+  document.querySelectorAll('.faq-item.open').forEach(f => {
     f.classList.remove('open');
     f.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
   });
 
-  // Open clicked if it was closed
   if (!isOpen) {
     item.classList.add('open');
     btn.setAttribute('aria-expanded', 'true');
@@ -358,7 +331,7 @@ function toggleFaq(btn) {
 // ===== VACANCIES =====
 function buildVacanciesGrid() {
   const grid = document.getElementById('vacancies-grid');
-  if (!grid) return;
+  if (!grid || !VACANCIES_DATA) return;
 
   grid.innerHTML = VACANCIES_DATA.map(v => `
     <article class="vacancy-card" onclick="openVacancyModal('${v.id}')" role="button" tabindex="0"
@@ -372,11 +345,10 @@ function buildVacanciesGrid() {
         <span class="vacancy-badge">📍 ${v.location}</span>
         <span class="vacancy-badge">🕐 ${v.schedule}</span>
       </div>
-      <button class="vacancy-apply-btn" onclick="event.stopPropagation(); applyVacancy('${v.id}')">
+      <button class="vacancy-apply-btn" onclick="event.stopPropagation();applyVacancy('${v.id}')">
         💬 Müraciət Et
       </button>
-    </article>
-  `).join('');
+    </article>`).join('');
 }
 
 function openVacancyModal(id) {
@@ -392,7 +364,7 @@ function openVacancyModal(id) {
     <div class="vacancy-modal-body">
       <div class="vacancy-modal-section">
         <h4>📋 Haqqında</h4>
-        <p style="font-size:0.95rem;color:var(--gray);line-height:1.7;">${v.desc}</p>
+        <p style="font-size:.95rem;color:var(--gray);line-height:1.7;">${v.desc}</p>
       </div>
       <div class="vacancy-modal-section">
         <h4>✅ Tələblər</h4>
@@ -404,13 +376,12 @@ function openVacancyModal(id) {
       </div>
       <div class="vacancy-modal-section">
         <h4>💰 Maaş</h4>
-        <p style="font-size:0.95rem;color:var(--gray);">${v.salary}</p>
+        <p style="font-size:.95rem;color:var(--gray);">${v.salary}</p>
       </div>
       <button class="vacancy-apply-btn" style="width:100%;margin-top:8px;" onclick="applyVacancy('${v.id}')">
         💬 WhatsApp ilə Müraciət Et
       </button>
-    </div>
-  `;
+    </div>`;
 
   document.getElementById('vacancy-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -429,14 +400,11 @@ function applyVacancy(id) {
 
   let msg = '💼 *COOL FOOD — VAKANSİYA MÜRACİƏTİ*\n\n';
   msg += '━━━━━━━━━━━━━━━━━━\n';
-  msg += `🏢 *Vəzifə:* ${v.title}\n`;
-  msg += `📍 *Departament:* ${v.dept}\n`;
-  msg += `🕐 *Rejim:* ${v.schedule}\n`;
+  msg += `🏢 *Vəzifə:* ${v.title}\n📍 *Departament:* ${v.dept}\n🕐 *Rejim:* ${v.schedule}\n`;
   msg += '━━━━━━━━━━━━━━━━━━\n\n';
   msg += 'Salam, bu vakansiyaya müraciət etmək istəyirəm. Məlumatlarımı göndərirəm.';
 
-  const encoded = encodeURIComponent(msg);
-  window.open('https://wa.me/994559406018?text=' + encoded, '_blank');
+  window.open('https://wa.me/994559406018?text=' + encodeURIComponent(msg), '_blank');
 }
 
 // ===== LIGHTBOX =====
@@ -458,40 +426,30 @@ function showToast(msg, type) {
   toast.textContent = msg;
   toast.className = 'toast show' + (type ? ' ' + type : '');
   if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 2800);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
 }
 
 // ===== KEYBOARD NAVIGATION =====
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    // Close modals/panels in order
-    if (document.getElementById('lightbox').classList.contains('open')) {
-      closeLightbox();
-    } else if (document.getElementById('product-modal-overlay').classList.contains('open')) {
-      closeProductModal(null, true);
-    } else if (document.getElementById('vacancy-modal-overlay').classList.contains('open')) {
-      closeVacancyModal(null, true);
-    } else if (state.cartOpen) {
-      toggleCart();
-    }
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('lightbox').classList.contains('open')) {
+    closeLightbox();
+  } else if (document.getElementById('product-modal-overlay').classList.contains('open')) {
+    closeProductModal(null, true);
+  } else if (document.getElementById('vacancy-modal-overlay').classList.contains('open')) {
+    closeVacancyModal(null, true);
+  } else if (state.cartOpen) {
+    toggleCart();
   }
-});
-
-// Set minimum date for reservation
-function setMinDate() {
-  const dateInput = document.getElementById('res-date');
-  if (dateInput) {
-    const today = new Date().toISOString().split('T')[0];
-    dateInput.min = today;
-  }
-}
+}, { passive: true });
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', function() {
+  // Set min date for reservation
+  const dateInput = document.getElementById('res-date');
+  if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+
   buildMenuGrids();
   buildVacanciesGrid();
   updateCartUI();
-  setMinDate();
-});
+}, { once: true });
